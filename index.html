@@ -1,13 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My React App</title>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <!-- The JavaScript bundle will be automatically injected here by the build process. -->
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajshree Punjab Lottery</title>
+    <!-- Use Tailwind CSS for rapid styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #333;
+        }
+        .header-bg {
+            background-color: #2b2b2b;
+        }
+        .tab-button.active {
+            background-color: #008cba;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .draw-box {
+            background: linear-gradient(to bottom, #444, #2b2b2b);
+            border: 2px solid #555;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .draw-number {
+            background-color: #f7d247;
+            color: #333;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+        .table-header {
+            background-color: #444;
+        }
+        .table-row {
+            border-bottom: 1px solid #444;
+        }
+        .table-row:nth-child(even) {
+            background-color: #444;
+        }
+        .table-row:nth-child(odd) {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body class="text-white">
+
+    <!-- Top Navigation Bar -->
+    <header class="header-bg py-4 px-4 flex justify-between items-center text-lg">
+        <div class="flex items-center space-x-2">
+            <a href="#" class="text-white"><i class="fas fa-arrow-left"></i></a>
+            <span class="font-bold">Rajlaxmi lotteries</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span class="text-gray-400 text-sm">lottery.blogspot.com</span>
+            <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">2</div>
+            <a href="#" class="text-white"><i class="fas fa-ellipsis-v"></i></a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="p-4">
+        <div class="flex justify-between items-center mb-4">
+            <span class="text-gray-400 text-sm">August 22, 2025</span>
+            <a href="#" class="text-gray-400"><i class="fas fa-share-alt"></i></a>
+        </div>
+
+        <h1 class="text-2xl font-bold mb-4 text-center">Rajshree Punjab Lottery</h1>
+
+        <!-- Tab Buttons -->
+        <div class="flex justify-center mb-6 rounded-lg bg-gray-500 p-1">
+            <button id="live-tab" class="tab-button active px-4 py-2 rounded-lg text-sm font-semibold w-1/3">Live</button>
+            <button id="history-tab" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold w-1/3">History</button>
+            <button id="admin-tab" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold w-1/3">Admin</button>
+        </div>
+
+        <!-- Live Draw Section -->
+        <div id="live-section" class="mb-8">
+            <p class="text-center text-gray-400 text-sm mb-2">15-Minute Draws - Live Results (9 AM - 9 PM)</p>
+            <p id="draw-date" class="text-center text-gray-400 text-sm mb-4">22/08/2025, 19:44:19</p>
+
+            <div class="draw-box rounded-lg p-4 mb-6 relative">
+                <span class="absolute top-2 right-2 text-xs text-gray-400">Next: 19:45</span>
+                <div id="countdown" class="text-center font-bold text-4xl mb-4 text-orange-400">00:49</div>
+                <div class="flex justify-around items-center space-x-2">
+                    <div class="text-center">
+                        <span class="block text-sm font-bold text-white mb-2">A</span>
+                        <div class="draw-number w-16 h-16 rounded-lg flex items-center justify-center font-bold text-3xl">83</div>
+                    </div>
+                    <div class="text-center">
+                        <span class="block text-sm font-bold text-white mb-2">B</span>
+                        <div class="draw-number w-16 h-16 rounded-lg flex items-center justify-center font-bold text-3xl">36</div>
+                    </div>
+                    <div class="text-center">
+                        <span class="block text-sm font-bold text-white mb-2">C</span>
+                        <div class="draw-number w-16 h-16 rounded-lg flex items-center justify-center font-bold text-3xl">99</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- History Table -->
+            <div class="bg-gray-700 rounded-lg overflow-hidden">
+                <table class="w-full text-center text-sm">
+                    <thead>
+                        <tr class="table-header">
+                            <th class="p-2 font-semibold">Time</th>
+                            <th class="p-2 font-semibold">A</th>
+                            <th class="p-2 font-semibold">B</th>
+                            <th class="p-2 font-semibold">C</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <!-- History rows will be generated here by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- History and Admin sections will be hidden initially -->
+        <div id="history-section" class="hidden text-center text-gray-400 p-8">
+            History data will be shown here.
+        </div>
+        <div id="admin-section" class="hidden text-center text-gray-400 p-8">
+            Admin panel will be shown here.
+        </div>
+
+    </main>
+
+    <!-- Font Awesome for icons -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const historyTableBody = document.getElementById('history-table-body');
+            const drawDateElement = document.getElementById('draw-date');
+            const liveSection = document.getElementById('live-section');
+            const historySection = document.getElementById('history-section');
+            const adminSection = document.getElementById('admin-section');
+            const tabs = document.querySelectorAll('.tab-button');
+            const drawNumbers = document.querySelectorAll('.draw-number');
+
+            // --- FAKE DATA FOR DEMONSTRATION ---
+            const mockHistory = [
+                { time: '09:00', a: 79, b: 79, c: 31 },
+                { time: '09:15', a: 34, b: 82, c: 64 },
+                { time: '09:30', a: 15, b: 49, c: 57 },
+                { time: '09:45', a: 26, b: 92, c: 84 },
+                { time: '10:00', a: 33, b: 37, c: 80 },
+                { time: '10:15', a: 61, b: 29, c: 84 },
+                { time: '10:30', a: 33, b: 15, c: 48 },
+                { time: '10:45', a: 94, b: 46, c: 24 },
+                { time: '11:00', a: 28, b: 71, c: 51 },
+                { time: '11:15', a: 91, b: 93, c: 13 },
+                { time: '11:30', a: 39, b: 72, c: 83 },
+                { time: '11:45', a: 31, b: 21, c: 75 },
+                { time: '12:00', a: 35, b: 65, c: 91 },
+                { time: '12:15', a: 50, b: 13, c: 95 },
+                { time: '12:30', a: 37, b: 53, c: 87 },
+                { time: '12:45', a: 31, b: 50, c: 74 },
+                { time: '13:00', a: 96, b: 36, c: 63 },
+                { time: '13:15', a: 22, b: 68, c: 77 },
+                { time: '13:30', a: 95, b: 60, c: 52 },
+                { time: '13:45', a: 12, b: 08, c: 06 },
+                { time: '14:00', a: 49, b: 18, c: 82 },
+                { time: '14:15', a: 70, b: 97, c: 82 },
+                { time: '14:30', a: 65, b: 91, c: 62 },
+                { time: '14:45', a: 09, b: 74, c: 64 },
+            ];
+
+            // --- FUNCTIONS ---
+            function renderHistoryTable() {
+                historyTableBody.innerHTML = ''; // Clear existing rows
+                mockHistory.forEach(row => {
+                    const tr = document.createElement('tr');
+                    tr.className = 'table-row';
+                    tr.innerHTML = `
+                        <td class="p-2">${row.time}</td>
+                        <td class="p-2">${row.a}</td>
+                        <td class="p-2">${row.b}</td>
+                        <td class="p-2">${row.c}</td>
+                    `;
+                    historyTableBody.appendChild(tr);
+                });
+            }
+
+            function updateTimeAndCountdown() {
+                const now = new Date();
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                
+                // This is a simple countdown placeholder
+                const countdownSeconds = 60 - now.getSeconds();
+                const countdownMinutes = 14 - (now.getMinutes() % 15); // Adjust for 15 min intervals
+                const countdownString = `${String(countdownMinutes).padStart(2, '0')}:${String(countdownSeconds).padStart(2, '0')}`;
+                document.getElementById('countdown').textContent = countdownString;
+
+                const date = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+                const time = `${hours}:${minutes}:${seconds}`;
+                drawDateElement.textContent = `${date}, ${time}`;
+            }
+
+            function handleTabClick(event) {
+                // Remove active class from all tabs
+                tabs.forEach(tab => tab.classList.remove('active', 'bg-blue-500', 'text-white'));
+                
+                // Add active class to the clicked tab
+                event.target.classList.add('active', 'bg-blue-500', 'text-white');
+                
+                // Hide all sections
+                liveSection.classList.add('hidden');
+                historySection.classList.add('hidden');
+                adminSection.classList.add('hidden');
+
+                // Show the selected section
+                if (event.target.id === 'live-tab') {
+                    liveSection.classList.remove('hidden');
+                } else if (event.target.id === 'history-tab') {
+                    historySection.classList.remove('hidden');
+                } else if (event.target.id === 'admin-tab') {
+                    adminSection.classList.remove('hidden');
+                }
+            }
+
+            // Add event listeners to tabs
+            tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+
+            // Initial render and timer
+            renderHistoryTable();
+            updateTimeAndCountdown();
+            setInterval(updateTimeAndCountdown, 1000); // Update every second
+
+        });
+    </script>
+</body>
 </html>
