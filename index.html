@@ -1,237 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rajshree Punjab Lottery</title>
-    <!-- Use Tailwind CSS for rapid styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #333;
-        }
-        .header-bg {
-            background-color: #2b2b2b;
-        }
-        .tab-button.active {
-            background-color: #008cba;
-            color: white;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-        .draw-box {
-            background: linear-gradient(to bottom, #444, #2b2b2b);
-            border: 2px solid #555;
-            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-        .draw-number {
-            background-color: #f7d247;
-            color: #333;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        }
-        .table-header {
-            background-color: #444;
-        }
-        .table-row {
-            border-bottom: 1px solid #444;
-        }
-        .table-row:nth-child(even) {
-            background-color: #444;
-        }
-        .table-row:nth-child(odd) {
-            background-color: #333;
-        }
-    </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rajshree Punjab Lottery — Live (9 AM – 9 PM)</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0e0f; --card:#141415; --muted:#6e6e72; --gold:#ffcf33;
+  --gold-2:#ffbf00; --warn:#e85d5d; --accent:#2a2a2f; --tableRow:#1b1b1f;
+  --stroke:#29292d; --radius:18px;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;
+  color:#fff; background:var(--bg); overflow-x:hidden;
+}
+header{position:sticky; top:0; z-index:5; background:linear-gradient(180deg,#0f0f11 0%, #0c0c0d 100%); border-bottom:1px solid #19191c; padding:12px 14px; text-align:center; font-weight:700; color:#eaeaea; letter-spacing:.3px;}
+
+.wrap{max-width:760px;margin:0 auto;padding:14px}
+.card{background:var(--card); border:1px solid var(--stroke); border-radius:var(--radius); padding:16px; box-shadow:0 8px 30px rgba(0,0,0,.45);}
+.title{font-size:26px; line-height:1.2; font-weight:800; color:var(--gold); text-shadow:0 1px 0 #000;}
+.sub{margin-top:4px; color:#c6c6c9; font-size:13px;}
+.meta{display:flex; align-items:center; justify-content:space-between; margin:12px 0 8px; color:#cfcfd4; font-size:12px;}
+
+.countdown{text-align:center; font-weight:800; letter-spacing:2px; font-size:46px; color:var(--warn); margin:10px 0 14px; text-shadow:0 0 20px rgba(232,93,93,.35); transition:transform .2s ease;}
+.countdown.soon{ transform:scale(1.04); }
+
+.abc{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:8px;}
+.tile{position:relative; background:linear-gradient(180deg,#141415 0%, #121213 100%); border:2px solid var(--gold-2); border-radius:16px; height:96px; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 24px rgba(255,191,0,.25); transition:transform .15s ease, box-shadow .15s ease;}
+.tile .label{position:absolute; top:8px; left:10px; font-size:13px; color:#9c8a3d; font-weight:800; letter-spacing:.4px;}
+.tile .value{font-size:34px; font-weight:900; color:var(--gold); text-shadow:0 1px 0 #000, 0 0 14px rgba(255,207,51,.35);}
+.tile.flash{ animation:pop .65s ease; }
+@keyframes pop{ 0%{transform:scale(1)} 35%{transform:scale(1.08)} 100%{transform:scale(1)} }
+
+nav.tabs{display:flex; gap:8px; margin-bottom:10px;}
+nav.tabs button{padding:10px 12px; border-radius:10px; border:1px solid #2c2c30; background:#19191c; color:#d6d6da; font-weight:700; cursor:pointer;}
+nav.tabs button.active{background:#221d0f; color:#ffcf33; border-color:#4a3a12;}
+
+.table{overflow:auto; border-radius:12px; border:1px solid var(--stroke); margin-top:10px;}
+table{width:100%; border-collapse:collapse; min-width:480px;}
+th,td{padding:12px 10px; text-align:center;}
+thead th{background:#201f22; color:#d9d9dd; font-weight:800; font-size:13px; border-bottom:1px solid var(--stroke);}
+tbody tr{ background:var(--tableRow); border-bottom:1px solid #222329; }
+tbody tr:nth-child(even){ background:#15161a; }
+tbody td{ color:#d6d6da; font-weight:600; }
+tr.live{ outline:2px solid rgba(255,207,51,.5); position:relative; }
+tr.live td{ color:#ffda58; }
+
+/* Admin */
+.admin-list{display:flex;flex-direction:column;gap:10px; max-height:60vh; overflow:auto;}
+.admin-item{display:grid;grid-template-columns:72px repeat(3,1fr);gap:8px; align-items:center; background:#121214; border:1px solid #2a2a2f; border-radius:12px; padding:10px;}
+.admin-time{font-weight:900;color:#ffda58;text-align:center}
+.admin-actions{display:flex; gap:10px; margin-top:12px; justify-content:flex-end;}
+.btn{padding:10px 14px; border-radius:10px; border:1px solid #2c2c30; background:#19191c; color:#e9e9ee; font-weight:800; cursor:pointer;}
+.btn.gold{ background:#221d0f; color:#ffcf33; border-color:#4a3a12; } .btn.gold:hover{ filter:brightness(1.1) }
+.btn.danger{ background:#211416; color:#ff9c9c; border-color:#3a2020; }
+
+@media (min-width:768px){ .title{font-size:30px} .countdown{font-size:52px} .tile{height:104px} }
+
+/* Modal message */
+.message-box{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--card);border:1px solid var(--stroke);border-radius:var(--radius);padding:20px;box-shadow:0 8px 30px rgba(0,0,0,.6);z-index:1000;display:none;flex-direction:column;align-items:center;gap:15px;text-align:center;max-width:80%}
+.message-box .close-btn{background:var(--gold);color:var(--bg);padding:8px 16px;border-radius:8px;border:none;font-weight:800;cursor:pointer}
+</style>
 </head>
-<body class="text-white">
+<body>
+<header>Rajshree Punjab Lottery</header>
 
-    <!-- Top Navigation Bar -->
-    <header class="header-bg py-4 px-4 flex justify-between items-center text-lg">
-        <div class="flex items-center space-x-2">
-            <a href="#" class="text-white"><i class="fas fa-arrow-left"></i></a>
-            <span class="font-bold">Rajlaxmi lotteries</span>
-        </div>
-        <div class="flex items-center space-x-4">
-            <span class="text-gray-400 text-sm">lottery.blogspot.com</span>
-            <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center">2</div>
-            <a href="#" class="text-white"><i class="fas fa-ellipsis-v"></i></a>
-        </div>
-    </header>
+<div class="wrap">
+  <nav class="tabs" style="justify-content:center">
+    <button id="tab-live" class="active" onclick="showTab('live')">Live</button>
+    <button id="tab-history" onclick="showTab('history')">History</button>
+    <button id="tab-admin" onclick="showTab('admin')">Admin</button>
+  </nav>
 
-    <!-- Main Content -->
-    <main class="p-4">
-        <div class="flex justify-between items-center mb-4">
-            <span class="text-gray-400 text-sm">August 22, 2025</span>
-            <a href="#" class="text-gray-400"><i class="fas fa-share-alt"></i></a>
-        </div>
+  <!-- LIVE -->
+  <section id="live" class="card">
+    <div class="title">Rajshree Punjab Lottery</div>
+    <div class="sub">15-Minute Draws • Live Results (9 AM – 9 PM)</div>
 
-        <h1 class="text-2xl font-bold mb-4 text-center">Rajshree Punjab Lottery</h1>
+    <div class="meta">
+      <div id="dateNow">--/--/---- | --:--:--</div>
+      <div id="windowNow">Next: <span id="nextSlot">--:--</span></div>
+    </div>
 
-        <!-- Tab Buttons -->
-        <div class="flex justify-center mb-6 rounded-lg bg-gray-500 p-1">
-            <button id="live-tab" class="tab-button active px-4 py-2 rounded-lg text-sm font-semibold w-1/3">Live</button>
-            <button id="history-tab" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold w-1/3">History</button>
-            <button id="admin-tab" class="tab-button px-4 py-2 rounded-lg text-sm font-semibold w-1/3">Admin</button>
-        </div>
+    <div id="countdown" class="countdown">00 : 00</div>
 
-        <!-- Live Draw Section -->
-        <div id="live-section" class="mb-8">
-            <p class="text-center text-gray-400 text-sm mb-2">15-Minute Draws - Live Results (9 AM - 9 PM)</p>
-            <p id="draw-date" class="text-center text-gray-400 text-sm mb-4">22/08/2025, 19:44:19</p>
+    <div class="abc">
+      <div class="tile" id="tileA"><span class="label">A</span><span class="value" id="valA">--</span></div>
+      <div class="tile" id="tileB"><span class="label">B</span><span class="value" id="valB">--</span></div>
+      <div class="tile" id="tileC"><span class="label">C</span><span class="value" id="valC">--</span></div>
+    </div>
 
-            <div class="draw-box rounded-lg p-4 mb-6 relative">
-                <span class="absolute top-2 right-2 text-xs text-gray-400">Next: 19:45</span>
-                <div id="countdown" class="text-center font-bold text-4xl mb-4 text-orange-400">00:49</div>
-                <div class="flex justify-around items-center space-x-2">
-                    <div class="text-center">
-                        <span class="block text-sm font-bold text-white mb-2">A</span>
-                        <div class="draw-number w-16 h-16 rounded-lg flex items-center justify-center font-bold text-3xl">83</div>
-                    </div>
-                    <div class="text-center">
-                        <span class="block text-sm font-bold text-white mb-2">B</span>
-                        <div class="draw-number w-16 h-16 rounded-lg flex items-center justify-center font-bold text-3xl">36</div>
-                    </div>
-                    <div class="text-center">
-                        <span class="block text-sm font-bold text-white mb-2">C</span>
-                        <div class="draw-number w-16 h-16 rounded-lg flex items-center justify-center font-bold text-3xl">99</div>
-                    </div>
-                </div>
-            </div>
+    <div class="table">
+      <table>
+        <thead><tr><th>Time</th><th>A</th><th>B</th><th>C</th></tr></thead>
+        <tbody id="tbodyToday"></tbody>
+      </table>
+    </div>
+  </section>
 
-            <!-- History Table -->
-            <div class="bg-gray-700 rounded-lg overflow-hidden">
-                <table class="w-full text-center text-sm">
-                    <thead>
-                        <tr class="table-header">
-                            <th class="p-2 font-semibold">Time</th>
-                            <th class="p-2 font-semibold">A</th>
-                            <th class="p-2 font-semibold">B</th>
-                            <th class="p-2 font-semibold">C</th>
-                        </tr>
-                    </thead>
-                    <tbody id="history-table-body">
-                        <!-- History rows will be generated here by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <!-- HISTORY -->
+  <section id="history" class="card" style="display:none">
+    <div class="title">Past Draws</div>
+    <div class="table" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Date</th><th>Time</th><th>A</th><th>B</th><th>C</th></tr></thead>
+        <tbody id="tbodyPast"></tbody>
+      </table>
+    </div>
+  </section>
 
-        <!-- History and Admin sections will be hidden initially -->
-        <div id="history-section" class="hidden text-center text-gray-400 p-8">
-            History data will be shown here.
-        </div>
-        <div id="admin-section" class="hidden text-center text-gray-400 p-8">
-            Admin panel will be shown here.
-        </div>
+  <!-- ADMIN -->
+  <section id="admin" class="card" style="display:none">
+    <div id="adminLogin" style="display:flex; gap:8px; align-items:center; margin:8px 0 14px;">
+      <input id="adminPass" type="password" placeholder="Enter password" autocomplete="current-password" />
+      <button class="btn gold" onclick="checkLogin()">Login</button>
+    </div>
 
-    </main>
+    <div id="adminPanel" style="display:none">
+      <div class="sub" style="margin-bottom:10px">Tap values to edit prefilled results (will reveal at their time).</div>
+      <div class="admin-list" id="adminList"></div>
+      <div class="admin-actions">
+        <button class="btn gold" onclick="saveAdmin()">Save</button>
+        <button class="btn danger" onclick="resetToday()">Reset Today</button>
+        <button class="btn" onclick="exportCSV()">Export CSV</button>
+        <button class="btn" onclick="logoutAdmin()">Logout</button>
+      </div>
+    </div>
+  </section>
+</div>
 
-    <!-- Font Awesome for icons -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+<!-- Message Modal -->
+<div id="messageBox" class="message-box">
+  <p id="messageText"></p>
+  <button class="close-btn" onclick="closeMessageBox()">OK</button>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const historyTableBody = document.getElementById('history-table-body');
-            const drawDateElement = document.getElementById('draw-date');
-            const liveSection = document.getElementById('live-section');
-            const historySection = document.getElementById('history-section');
-            const adminSection = document.getElementById('admin-section');
-            const tabs = document.querySelectorAll('.tab-button');
-            const drawNumbers = document.querySelectorAll('.draw-number');
+<script type="module">
+/* =========================
+   Firebase (v11) setup
+========================= */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-            // --- FAKE DATA FOR DEMONSTRATION ---
-            const mockHistory = [
-                { time: '09:00', a: 79, b: 79, c: 31 },
-                { time: '09:15', a: 34, b: 82, c: 64 },
-                { time: '09:30', a: 15, b: 49, c: 57 },
-                { time: '09:45', a: 26, b: 92, c: 84 },
-                { time: '10:00', a: 33, b: 37, c: 80 },
-                { time: '10:15', a: 61, b: 29, c: 84 },
-                { time: '10:30', a: 33, b: 15, c: 48 },
-                { time: '10:45', a: 94, b: 46, c: 24 },
-                { time: '11:00', a: 28, b: 71, c: 51 },
-                { time: '11:15', a: 91, b: 93, c: 13 },
-                { time: '11:30', a: 39, b: 72, c: 83 },
-                { time: '11:45', a: 31, b: 21, c: 75 },
-                { time: '12:00', a: 35, b: 65, c: 91 },
-                { time: '12:15', a: 50, b: 13, c: 95 },
-                { time: '12:30', a: 37, b: 53, c: 87 },
-                { time: '12:45', a: 31, b: 50, c: 74 },
-                { time: '13:00', a: 96, b: 36, c: 63 },
-                { time: '13:15', a: 22, b: 68, c: 77 },
-                { time: '13:30', a: 95, b: 60, c: 52 },
-                { time: '13:45', a: 12, b: 08, c: 06 },
-                { time: '14:00', a: 49, b: 18, c: 82 },
-                { time: '14:15', a: 70, b: 97, c: 82 },
-                { time: '14:30', a: 65, b: 91, c: 62 },
-                { time: '14:45', a: 09, b: 74, c: 64 },
-            ];
+/* ======= FILL THIS ======= */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "SENDER_ID",
+  appId: "APP_ID"
+};
+/* Optional logical app grouping (kept from your path) */
+const appId = "rajshree";
+/* ======================== */
 
-            // --- FUNCTIONS ---
-            function renderHistoryTable() {
-                historyTableBody.innerHTML = ''; // Clear existing rows
-                mockHistory.forEach(row => {
-                    const tr = document.createElement('tr');
-                    tr.className = 'table-row';
-                    tr.innerHTML = `
-                        <td class="p-2">${row.time}</td>
-                        <td class="p-2">${row.a}</td>
-                        <td class="p-2">${row.b}</td>
-                        <td class="p-2">${row.c}</td>
-                    `;
-                    historyTableBody.appendChild(tr);
-                });
-            }
+const app   = initializeApp(firebaseConfig);
+const auth  = getAuth(app);
+const db    = getFirestore(app);
 
-            function updateTimeAndCountdown() {
-                const now = new Date();
-                const hours = String(now.getHours()).padStart(2, '0');
-                const minutes = String(now.getMinutes()).padStart(2, '0');
-                const seconds = String(now.getSeconds()).padStart(2, '0');
-                
-                // This is a simple countdown placeholder
-                const countdownSeconds = 60 - now.getSeconds();
-                const countdownMinutes = 14 - (now.getMinutes() % 15); // Adjust for 15 min intervals
-                const countdownString = `${String(countdownMinutes).padStart(2, '0')}:${String(countdownSeconds).padStart(2, '0')}`;
-                document.getElementById('countdown').textContent = countdownString;
+/* =========================
+   App constants & helpers
+========================= */
+const DRAW_START = 9;   // inclusive (09:00)
+const DRAW_END   = 21;  // inclusive (21:00)
+const SLOT_MIN   = 15;
+const ADMIN_PASSWORD = "admin123"; // not shown in UI
 
-                const date = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
-                const time = `${hours}:${minutes}:${seconds}`;
-                drawDateElement.textContent = `${date}, ${time}`;
-            }
+const pad2 = n => String(n).padStart(2,'0');
+const todayKey = (d=new Date()) => d.toISOString().split('T')[0];
+const toHuman = (hhmm) => {
+  const [H,M]=hhmm.split(':').map(Number);
+  const h=(H%12)||12, ap=H>=12?'PM':'AM';
+  return `${h}:${pad2(M)} ${ap}`;
+};
+const fromHuman = (human) => {
+  const m = human.match(/(\d{1,2}):(\d{2})\s*(AM|PM)/i);
+  if(!m) return human;
+  let H = parseInt(m[1],10); const M=m[2]; const ap=m[3].toUpperCase();
+  if(ap==='PM' && H!==12) H+=12; if(ap==='AM' && H===12) H=0;
+  return `${pad2(H)}:${M}`;
+};
 
-            function handleTabClick(event) {
-                // Remove active class from all tabs
-                tabs.forEach(tab => tab.classList.remove('active', 'bg-blue-500', 'text-white'));
-                
-                // Add active class to the clicked tab
-                event.target.classList.add('active', 'bg-blue-500', 'text-white');
-                
-                // Hide all sections
-                liveSection.classList.add('hidden');
-                historySection.classList.add('hidden');
-                adminSection.classList.add('hidden');
+let drawsToday = [];   // [{time:'09:00', A:'00',B:'00',C:'00', date:'YYYY-MM-DD'}]
+let unsubToday = null;
 
-                // Show the selected section
-                if (event.target.id === 'live-tab') {
-                    liveSection.classList.remove('hidden');
-                } else if (event.target.id === 'history-tab') {
-                    historySection.classList.remove('hidden');
-                } else if (event.target.id === 'admin-tab') {
-                    adminSection.classList.remove('hidden');
-                }
-            }
+/* =========================
+   UI: message modal
+========================= */
+function showMessageBox(msg){
+  document.getElementById('messageText').textContent = msg;
+  document.getElementById('messageBox').style.display='flex';
+}
+window.closeMessageBox = () => document.getElementById('messageBox').style.display='none';
 
-            // Add event listeners to tabs
-            tabs.forEach(tab => tab.addEventListener('click', handleTabClick));
+/* =========================
+   Draw generation (stable per day)
+========================= */
+function seededRand(seed){
+  // Mulberry32
+  let t = seed + 0x6D2B79F5;
+  return function(){
+    t |= 0; t = t + 0x6D2B79F5 | 0;
+    let r = Math.imul(t ^ t >>> 15, 1 | t);
+    r ^= r + Math.imul(r ^ r >>> 7, 61 | r);
+    return ((r ^ r >>> 14) >>> 0) / 4294967296;
+  };
+}
+function dateSeed(dateStr){
+  // YYYY-MM-DD -> numeric seed
+  return parseInt(dateStr.replace(/-/g,''),10) || 20250101;
+}
+function generateDay(dateStr){
+  const out=[];
+  const rand = seededRand(dateSeed(dateStr));
+  for(let h=DRAW_START; h<=DRAW_END; h++){
+    for(let m=0; m<60; m+=SLOT_MIN){
+      out.push({
+        time: `${pad2(h)}:${pad2(m)}`,
+        A: pad2(Math.floor(rand()*100)),
+        B: pad2(Math.floor(rand()*100)),
+        C: pad2(Math.floor(rand()*100)),
+        date: dateStr
+      });
+    }
+  }
+  return out;
+}
 
-            // Initial render and timer
-            renderHistoryTable();
-            updateTimeAndCountdown();
-            setInterval(updateTimeAndCountdown, 1000); // Update every second
+/* =========================
+   Firestore I/O
+========================= */
+function todayDocRef(dateStr=todayKey()){
+  // Keep your original path style
+  return doc(db, `artifacts/${appId}/public/data/lottery_draws`, dateStr);
+}
+async function ensureTodayInFirestore(){
+  const dateStr = todayKey();
+  const ref = todayDocRef(dateStr);
+  const snap = await getDoc(ref);
+  if(!snap.exists()){
+    const gen = generateDay(dateStr);
+    await setDoc(ref, { draws: gen, createdAt: new Date().toISOString() });
+    return gen;
+  }
+  const data = snap.data();
+  return (data && data.draws) ? data.draws : [];
+}
+async function saveTodayToFirestore(){
+  const dateStr = todayKey();
+  const ref = todayDocRef(dateStr);
+  const clean = drawsToday.map(({time,A,B,C,date})=>({time,A,B,C,date}));
+  await setDoc(ref, { draws: clean, updatedAt: new Date().toISOString() });
+}
 
-        });
-    </script>
+/* =========================
+   Admin
+========================= */
+function checkLogin(){
+  const pass = document.getElementById('adminPass').value;
+  if(pass === ADMIN_PASSWORD){
+    document.getElementById('adminLogin').style.display='none';
+    document.getElementById('adminPanel').style.display='block';
+    populateAdmin();
+  } else {
+    showMessageBox('Wrong password');
+  }
+}
+function logoutAdmin(){
+  document.getElementById('adminPanel').style.display='none';
+  document.getElementById('adminLogin').style.display='flex';
+  document.getElementById('adminPass').value='';
+}
+function populateAdmin(){
+  const list = document.getElementById('adminList');
+  list.innerHTML='';
+  // Always full day 9:00–21:00
+  const map = new Map(drawsToday.map(d=>[d.time,d]));
+  for(let h=DRAW_START; h<=DRAW_END; h++){
+    for(let m=0; m<60; m+=SLOT_MIN){
+      const key = `${pad2(h)}:${pad2(m)}`;
+      const slot = map.get(key) || {time:key,A:'--',B:'--',C:'--'};
+      const wrapper = document.createElement('div');
+      wrapper.className='admin-item';
+      wrapper.innerHTML = `
+        <div class="admin-time">${toHuman(key)}</div>
+        <input id="A_${key}" value="${slot.A}" maxlength="2" inputmode="numeric" pattern="[0-9]*" />
+        <input id="B_${key}" value="${slot.B}" maxlength="2" inputmode="numeric" pattern="[0-9]*" />
+        <input id="C_${key}" value="${slot.C}" maxlength="2" inputmode="numeric" pattern="[0-9]*" />
+      `;
+      list.appendChild(wrapper);
+    }
+  }
+}
+async function saveAdmin(){
+  // Read back from inputs into drawsToday
+  const map = new Map(drawsToday.map(d=>[d.time,d]));
+  const dateStr = todayKey();
+  for(let h=DRAW_START; h<=DRAW_END; h++){
+    for(let m=0; m<60; m+=SLOT_MIN){
+      const key = `${pad2(h)}:${pad2(m)}`;
+      const A = (document.getElementById(`A_${key}`)?.value || '--').toString().padStart(2,'0');
+      const B = (document.getElementById(`B_${key}`)?.value || '--').toString().padStart(2,'0');
+      const C = (document.getElementById(`C_${key}`)?.value || '--').toString().padStart(2,'0');
+      map.set(key, {time:key,A,B,C,date:dateStr});
+    }
+  }
+  drawsToday = Array.from(map.values()).sort((a,b)=>a.time.localeCompare(b.time));
+  await saveTodayToFirestore();
+  showMessageBox('Saved! Changes will reveal at their times.');
+}
+async function resetToday(){
+  const dateStr = todayKey();
+  const gen = generateDay(dateStr);
+  drawsToday = gen;
+  await saveTodayToFirestore();
+  populateAdmin();
+  showMessageBox('Today reset with fresh prefilled draws.');
+}
+function exportCSV(){
+  let csv='Time,A,B,C\n';
+  drawsToday.forEach(d=>{ csv += `${d.time},${d.A},${d.B},${d.C}\n`; });
+  const blob=new Blob([csv],{type:'text/csv'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a'); a.href=url; a.download=`draws_${todayKey()}.csv`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* =========================
+   Tabs
+========================= */
+function showTab(tab){
+  document.getElementById('live').style.display   = tab==='live'   ? 'block' : 'none';
+  document.getElementById('history').style.display= tab==='history'? 'block' : 'none';
+  document.getElementById('admin').style.display  = tab==='admin'  ? 'block' : 'none';
+  document.getElementById('tab-live').classList.toggle('active', tab==='live');
+  document.getElementById('tab-history').classList.toggle('active', tab==='history');
+  document.getElementById('tab-admin').classList.toggle('active', tab==='admin');
+  if(tab==='history') populatePast();
+  if(tab==='admin' && document.getElementById('adminPanel').style.display==='block') populateAdmin();
+}
+window.showTab = showTab;
+
+/* =========================
+   Live view
+========================= */
+function currentSlotKey(now=new Date()){
+  const H = now.getHours();
+  const M = Math.floor(now.getMinutes()/SLOT_MIN)*SLOT_MIN;
+  return `${pad2(H)}:${pad2(M)}`;
+}
+function nextSlotAfter(now=new Date()){
+  const mins = now.getHours()*60 + now.getMinutes();
+  for(let h=DRAW_START; h<=DRAW_END; h++){
+    for(let m=0; m<60; m+=SLOT_MIN){
+      const total = h*60+m;
+      if(total > mins) return {h,m};
+    }
+  }
+  return null;
+}
+function updateLive(){
+  const now = new Date();
+  document.getElementById('dateNow').textContent = now.toLocaleString();
+
+  const countdownEl = document.getElementById('countdown');
+  const nextSpan = document.getElementById('nextSlot');
+
+  // Countdown target: within window => next slot; before 9 => 09:00; after 21 => tomorrow 09:00
+  let target = null;
+  if(now.getHours() < DRAW_START){
+    target = new Date(now); target.setHours(DRAW_START,0,0,0);
+    nextSpan.textContent = `${toHuman('09:00')}`;
+  } else if(now.getHours() > DRAW_END){
+    target = null; // finished for today
+    nextSpan.textContent = `Tomorrow ${toHuman('09:00')}`;
+  } else {
+    const nxt = nextSlotAfter(now);
+    if(nxt){
+      target = new Date(now); target.setHours(nxt.h, nxt.m, 0, 0);
+      nextSpan.textContent = toHuman(`${pad2(nxt.h)}:${pad2(nxt.m)}`);
+    } else {
+      target = null;
+      nextSpan.textContent = `Tomorrow ${toHuman('09:00')}`;
+    }
+  }
+
+  if(target){
+    const diff = Math.max(0, Math.floor((target - now)/1000));
+    countdownEl.textContent = `${pad2(Math.floor(diff/60))} : ${pad2(diff%60)}`;
+    countdownEl.classList.toggle('soon', diff<=12);
+  } else {
+    countdownEl.textContent = `— : —`;
+    countdownEl.classList.remove('soon');
+  }
+
+  // Set A/B/C live tiles only during 9–21 window and only once the slot time has arrived
+  let liveValues = {A:'--',B:'--',C:'--'};
+  if(now.getHours()>=DRAW_START && now.getHours()<=DRAW_END){
+    const key = currentSlotKey(now);
+    const found = drawsToday.find(d => d.time===key);
+    if(found){
+      liveValues = {A:found.A, B:found.B, C:found.C};
+      // pop animation
+      ['tileA','tileB','tileC'].forEach(id=>{
+        const t=document.getElementById(id); t.classList.remove('flash'); void t.offsetWidth; t.classList.add('flash');
+      });
+    }
+  }
+  document.getElementById('valA').textContent = liveValues.A;
+  document.getElementById('valB').textContent = liveValues.B;
+  document.getElementById('valC').textContent = liveValues.C;
+
+  buildTodayTable(now);
+}
+function buildTodayTable(now=new Date()){
+  const tbody = document.getElementById('tbodyToday');
+  tbody.innerHTML='';
+  const cur = now.getHours()*60 + now.getMinutes();
+  const within = now.getHours()>=DRAW_START && now.getHours()<=DRAW_END;
+  drawsToday.forEach(slot=>{
+    const [h,m]=slot.time.split(':').map(Number);
+    const t=h*60+m;
+    // Visitors only see draws up to current time AND only between 9–21
+    if(within && t <= Math.floor(cur/SLOT_MIN)*SLOT_MIN){
+      const tr=document.createElement('tr');
+      if(t === Math.floor(cur/SLOT_MIN)*SLOT_MIN) tr.className='live';
+      tr.innerHTML = `<td>${toHuman(slot.time)}</td><td>${slot.A}</td><td>${slot.B}</td><td>${slot.C}</td>`;
+      tbody.appendChild(tr);
+    }
+  });
+}
+
+/* =========================
+   History (all dates)
+========================= */
+async function populatePast(){
+  const tbody = document.getElementById('tbodyPast');
+  tbody.innerHTML = `<tr><td colspan="5">Loading...</td></tr>`;
+  try{
+    const col = collection(db, `artifacts/${appId}/public/data/lottery_draws`);
+    const snaps = await getDocs(col);
+    let rows=[];
+    snaps.forEach(s=>{
+      const date = s.id;
+      const data = s.data();
+      (data?.draws||[]).forEach(d=>rows.push({date, ...d}));
+    });
+    rows.sort((a,b)=> (a.date===b.date ? b.time.localeCompare(a.time) : b.date.localeCompare(a.date)));
+    tbody.innerHTML='';
+    if(rows.length===0){
+      tbody.innerHTML = `<tr><td colspan="5">No history yet.</td></tr>`;
+      return;
+    }
+    rows.forEach(r=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML = `<td>${r.date}</td><td>${toHuman(r.time)}</td><td>${r.A}</td><td>${r.B}</td><td>${r.C}</td>`;
+      tbody.appendChild(tr);
+    });
+  }catch(e){
+    console.error(e);
+    tbody.innerHTML = `<tr><td colspan="5">Failed to load history.</td></tr>`;
+  }
+}
+
+/* =========================
+   Realtime + boot
+========================= */
+async function boot(){
+  await signInAnonymously(auth);
+  // Ensure today's doc exists; if not, create it
+  const pre = await ensureTodayInFirestore();
+  drawsToday = pre;
+
+  // Live listener for today
+  const ref = todayDocRef(todayKey());
+  unsubToday = onSnapshot(ref, snap=>{
+    const d = snap.data();
+    if(d && Array.isArray(d.draws)){
+      drawsToday = d.draws.slice().sort((a,b)=>a.time.localeCompare(b.time));
+    }
+    // If admin panel open, refresh inputs
+    if(document.getElementById('adminPanel').style.display==='block') populateAdmin();
+    updateLive();
+  });
+
+  // tickers
+  updateLive();
+  setInterval(updateLive, 1000);
+}
+boot();
+
+/* =========================
+   Expose handlers
+========================= */
+window.checkLogin = checkLogin;
+window.logoutAdmin = logoutAdmin;
+window.saveAdmin = saveAdmin;
+window.resetToday = resetToday;
+window.exportCSV = exportCSV;
+
+</script>
 </body>
 </html>
